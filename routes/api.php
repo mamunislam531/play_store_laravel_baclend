@@ -23,8 +23,9 @@ Route::prefix('quotations')->group(function () {
     Route::put('/{id}', [QuotationController::class, 'update']);
     Route::delete('/{id}', [QuotationController::class, 'destroy']);
     Route::post('/bulk', [QuotationController::class, 'bulkAdd']);
+ });
 
-});
+ Route::get('/slider', [QuotationController::class, 'slider']);
 
 // ===== favorites Routes =====
 Route::prefix('favorites')->group(function () {
@@ -32,4 +33,3 @@ Route::prefix('favorites')->group(function () {
     Route::get('/{device_id}', [FavoriteQuotationController::class, 'index']);
     Route::delete('/', [FavoriteQuotationController::class, 'destroy']);
 });
-

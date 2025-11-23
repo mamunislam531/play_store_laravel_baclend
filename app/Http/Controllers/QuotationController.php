@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use App\Models\Quotation;
 use Illuminate\Http\Request;
@@ -44,21 +45,21 @@ class QuotationController extends Controller
     // }
 
     public function show($category_id)
-{
-    $quotations = Quotation::where('category_id', $category_id)->get();
+    {
+        $quotations = Quotation::where('category_id', $category_id)->get();
 
-    if ($quotations->isEmpty()) {
+        if ($quotations->isEmpty()) {
+            return response()->json([
+                'status' => 'Error',
+                'message' => 'No quotations found for this category'
+            ], 404);
+        }
+
         return response()->json([
-            'status' => 'Error',
-            'message' => 'No quotations found for this category'
-        ], 404);
+            'status' => 'Success',
+            'data' => $quotations
+        ]);
     }
-
-    return response()->json([
-        'status' => 'Success',
-        'data' => $quotations
-    ]);
-}
 
 
     // Update quotation
@@ -104,6 +105,30 @@ class QuotationController extends Controller
             'status' => 'Success',
             'message' => 'Bulk insert completed',
             'inserted_count' => count($data['quotations'])
+        ]);
+    }
+
+
+    public function slider()
+    {
+        // Option 1: Latest 10 quotations
+        // $quotations = Quotation::latest()->take(10)->get();
+        $quotations = Quotation::inRandomOrder()->take(10)->get();
+
+
+        // Option 2 (optional): Random 10 quotations
+        // $quotations = Quotation::inRandomOrder()->take(10)->get();
+
+        if ($quotations->isEmpty()) {
+            return response()->json([
+                'status' => 'Error',
+                'message' => 'No quotations found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'Success',
+            'data' => $quotations
         ]);
     }
 }
