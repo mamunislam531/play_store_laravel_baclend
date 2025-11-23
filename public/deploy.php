@@ -1,5 +1,5 @@
 <?php
-$secret = 'mySuperSecretDeployKey123!';
+$secret = '';
 $signature = $_SERVER['HTTP_X_HUB_SIGNATURE'] ?? '';
 $payload = file_get_contents('php://input');
 
