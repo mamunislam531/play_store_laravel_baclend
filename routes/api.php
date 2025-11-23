@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\FavoriteQuotationController;
+
 
 // ===== Category Routes =====
 Route::prefix('categories')->group(function () {
@@ -23,3 +25,11 @@ Route::prefix('quotations')->group(function () {
     Route::post('/bulk', [QuotationController::class, 'bulkAdd']);
 
 });
+
+// ===== favorites Routes =====
+Route::prefix('favorites')->group(function () {
+    Route::post('/', [FavoriteQuotationController::class, 'store']);
+    Route::get('/{device_id}', [FavoriteQuotationController::class, 'index']);
+    Route::delete('/', [FavoriteQuotationController::class, 'destroy']);
+});
+
