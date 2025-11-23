@@ -5,6 +5,14 @@
 
     RewriteEngine On
 
+    # Force HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Remove www and redirect to non-www
+    RewriteCond %{HTTP_HOST} ^www\.playstore\.citsolution\.xyz [NC]
+    RewriteRule ^(.*)$ https://playstore.citsolution.xyz/$1 [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
