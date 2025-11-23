@@ -142,7 +142,7 @@
 <!-- Glassmorphic card -->
 <div class="card">
     <div class="animate-text">Play Store App Backend is Running</div>
-    <div class="subtitle">sThis backend is built for the Play Store App API.</div>
+    <div class="subtitle">ssThis backend is built for the Play Store App API.</div>
 </div>
 
 <!-- Particles (optional) -->
