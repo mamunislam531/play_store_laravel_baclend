@@ -1,5 +1,5 @@
 <?php
-$secret = 'H8f93K@2Ls!pQz7Wb1NhXy49';
+$secret = 'YOUR_RANDOM_SECRET_HERE';
 $signature = $_SERVER['HTTP_X_HUB_SIGNATURE'] ?? '';
 $payload = file_get_contents('php://input');
 
