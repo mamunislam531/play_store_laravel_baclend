@@ -49,3 +49,9 @@ Route::post('author-quotes/bulk', [AuthorQuoteController::class, 'bulkAdd']);
 Route::get('authors/{id}/quotes', function ($id) {
     return \App\Models\AuthorQuote::where('author_id', $id)->get();
 });
+
+use App\Http\Controllers\FavAuthorQuoteController;
+
+Route::get('fav-author-quote', [FavAuthorQuoteController::class, 'index']);
+Route::post('fav-author-quote', [FavAuthorQuoteController::class, 'store']);
+Route::delete('fav-author-quote', [FavAuthorQuoteController::class, 'destroy']);
