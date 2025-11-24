@@ -44,7 +44,7 @@ Route::apiResource('authors', AuthorController::class);
 
 
 Route::apiResource('author-quotes', AuthorQuoteController::class);
-
+Route::post('author-quotes/bulk', [AuthorQuoteController::class, 'bulkAdd']);
 // Get all quotes by specific author
 Route::get('authors/{id}/quotes', function ($id) {
     return \App\Models\AuthorQuote::where('author_id', $id)->get();

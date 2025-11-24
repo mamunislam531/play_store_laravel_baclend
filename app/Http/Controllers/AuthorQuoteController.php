@@ -48,4 +48,30 @@ class AuthorQuoteController extends Controller
 
         return response()->json(['message' => 'Quote deleted successfully']);
     }
+
+    public function bulkAdd(Request $request)
+{
+    $data = $request->validate([
+        'quotes' => 'required|array',
+        'quotes.*.author_id' => 'required|exists:authors,id',
+        'quotes.*.quote' => 'required|string',
+    ]);
+
+    $insertData = collect($data['quotes'])->map(function ($item) {
+        return [
+            'author_id' => $item['author_id'],
+            'quote' => $item['quote'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+    })->toArray();
+
+    AuthorQuote::insert($insertData);
+
+    return response()->json([
+        'message' => 'Quotes added successfully',
+        'count' => count($insertData)
+    ]);
+}
+
 }

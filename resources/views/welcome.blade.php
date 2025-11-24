@@ -143,7 +143,7 @@
 <div class="card">
     <div class="animate-text">Play Store App Backend is Running</div>
     <div class="subtitle">This backend is built for the Play Store App API.</div>
-</div>
+</div>  
 
 <!-- Particles (optional) -->
 <script>
