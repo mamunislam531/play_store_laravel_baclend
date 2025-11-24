@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\FavoriteQuotationController;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\AuthorQuoteController;
+
 
 
 // ===== Category Routes =====
@@ -32,4 +35,17 @@ Route::prefix('favorites')->group(function () {
     Route::post('/', [FavoriteQuotationController::class, 'store']);
     Route::get('/{device_id}', [FavoriteQuotationController::class, 'index']);
     Route::delete('/', [FavoriteQuotationController::class, 'destroy']);
+});
+
+// Full CRUD routes for authors
+Route::apiResource('authors', AuthorController::class);
+
+
+
+
+Route::apiResource('author-quotes', AuthorQuoteController::class);
+
+// Get all quotes by specific author
+Route::get('authors/{id}/quotes', function ($id) {
+    return \App\Models\AuthorQuote::where('author_id', $id)->get();
 });
