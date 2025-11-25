@@ -6,6 +6,7 @@ use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\FavoriteQuotationController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\AuthorQuoteController;
+use App\Http\Controllers\NamesListController;
 
 
 
@@ -26,9 +27,9 @@ Route::prefix('quotations')->group(function () {
     Route::put('/{id}', [QuotationController::class, 'update']);
     Route::delete('/{id}', [QuotationController::class, 'destroy']);
     Route::post('/bulk', [QuotationController::class, 'bulkAdd']);
- });
+});
 
- Route::get('/slider', [QuotationController::class, 'slider']);
+Route::get('/slider', [QuotationController::class, 'slider']);
 
 
 // ===== favorites Routes =====
@@ -57,3 +58,16 @@ Route::get('fav-author-quote', [FavAuthorQuoteController::class, 'index']);
 Route::post('fav-author-quote', [FavAuthorQuoteController::class, 'store']);
 Route::delete('fav-author-quote', [FavAuthorQuoteController::class, 'destroy']);
 Route::get('/quote-slider', [FavAuthorQuoteController::class, 'slider']);
+
+use App\Http\Controllers\ReligionController;
+
+Route::apiResource('religions', ReligionController::class);
+
+
+Route::prefix('names')->group(function () {
+    Route::get('/', [NamesListController::class, 'index']);
+    Route::post('/', [NamesListController::class, 'store']);
+    Route::get('/religion/{id}', [NamesListController::class, 'byReligion']);
+    Route::get('/religion/{id}/{gender}', [NamesListController::class, 'byReligionAndGender']);
+    Route::post('/bulk', [NamesListController::class, 'bulkStore']);
+});
