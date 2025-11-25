@@ -30,6 +30,7 @@ Route::prefix('quotations')->group(function () {
 
  Route::get('/slider', [QuotationController::class, 'slider']);
 
+
 // ===== favorites Routes =====
 Route::prefix('favorites')->group(function () {
     Route::post('/', [FavoriteQuotationController::class, 'store']);
@@ -55,3 +56,4 @@ use App\Http\Controllers\FavAuthorQuoteController;
 Route::get('fav-author-quote', [FavAuthorQuoteController::class, 'index']);
 Route::post('fav-author-quote', [FavAuthorQuoteController::class, 'store']);
 Route::delete('fav-author-quote', [FavAuthorQuoteController::class, 'destroy']);
+Route::get('/quote-slider', [FavAuthorQuoteController::class, 'slider']);

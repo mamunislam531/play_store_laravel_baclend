@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FavAuthorQuote;
+use App\Models\AuthorQuote;
 
 class FavAuthorQuoteController extends Controller
 {
@@ -18,7 +19,7 @@ class FavAuthorQuoteController extends Controller
             ->where('device_id', $request->device_id)
             ->get();
 
-        $result = $favorites->map(function($item) {
+        $result = $favorites->map(function ($item) {
             return [
                 'id' => $item->id,
                 'device_id' => $item->device_id,
@@ -64,5 +65,36 @@ class FavAuthorQuoteController extends Controller
         }
 
         return response()->json(['message' => 'Favorite not found'], 404);
+    }
+
+    public function slider()
+    {
+
+        $quotations = AuthorQuote::inRandomOrder()->take(10)->get();
+
+
+        if ($quotations->isEmpty()) {
+            return response()->json([
+                'status' => 'Error',
+                'message' => 'No quotations found'
+            ], 404);
+        }
+
+        // Format response
+        $data = $quotations->map(function ($quote) {
+            return [
+                'id' => $quote->id,
+                'author_id' => $quote->author_id,
+                'author_name' => $quote->author ? $quote->author->name : null,
+                'quote' => $quote->quote,
+                'created_at' => $quote->created_at,
+                'updated_at' => $quote->updated_at,
+            ];
+        });
+
+        return response()->json([
+            'status' => 'Success',
+            'data' => $data
+        ]);
     }
 }
