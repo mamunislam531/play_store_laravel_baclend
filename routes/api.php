@@ -70,6 +70,7 @@ Route::prefix('names')->group(function () {
     Route::get('/religion/{id}', [NamesListController::class, 'byReligion']);
     Route::get('/religion/{id}/{gender}', [NamesListController::class, 'byReligionAndGender']);
     Route::post('/bulk', [NamesListController::class, 'bulkStore']);
+    Route::get('/{letter}', [NamesListController::class, 'searchByLetter']);
 });
 
 

@@ -82,40 +82,73 @@ class NamesListController extends Controller
     }
 
     public function bulkStore(Request $request)
-{
-    $data = $request->validate([
-        '*.religion_id' => 'required|exists:religions,id',
-        '*.gender' => 'required|in:Boy,Girl',
-        '*.name_bn' => 'required|string|max:255',
-        '*.name_en' => 'required|string|max:255',
-        '*.bn_meaning' => 'nullable|string',
-    ]);
+    {
+        $data = $request->validate([
+            '*.religion_id' => 'required|exists:religions,id',
+            '*.gender' => 'required|in:Boy,Girl',
+            '*.name_bn' => 'required|string|max:255',
+            '*.name_en' => 'required|string|max:255',
+            '*.bn_meaning' => 'nullable|string',
+        ]);
 
-    $inserted = [];
-    foreach ($data as $item) {
-        $inserted[] = NamesList::create($item);
+        $inserted = [];
+        foreach ($data as $item) {
+            $inserted[] = NamesList::create($item);
+        }
+
+        // শুধু title হিসেবে religion দেখাতে চাইলে
+        $inserted = collect($inserted)->map(function ($name) {
+            return [
+                'id' => $name->id,
+                'religion_id' => $name->religion_id,
+                'religion' => $name->religion ? $name->religion->title : null,
+                'gender' => $name->gender,
+                'name_bn' => $name->name_bn,
+                'name_en' => $name->name_en,
+                'bn_meaning' => $name->bn_meaning,
+                'created_at' => $name->created_at,
+                'updated_at' => $name->updated_at,
+            ];
+        });
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Names added successfully',
+            'data' => $inserted
+        ]);
     }
 
-    // শুধু title হিসেবে religion দেখাতে চাইলে
-    $inserted = collect($inserted)->map(function ($name) {
-        return [
-            'id' => $name->id,
-            'religion_id' => $name->religion_id,
-            'religion' => $name->religion ? $name->religion->title : null,
-            'gender' => $name->gender,
-            'name_bn' => $name->name_bn,
-            'name_en' => $name->name_en,
-            'bn_meaning' => $name->bn_meaning,
-            'created_at' => $name->created_at,
-            'updated_at' => $name->updated_at,
-        ];
-    });
 
-    return response()->json([
-        'status' => true,
-        'message' => 'Names added successfully',
-        'data' => $inserted
-    ]);
-}
+    public function searchByLetter($letter)
+    {
+        // Validate only alphabet input
+        if (!preg_match('/^[A-Za-z]$/', $letter)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid character. Only A-Z allowed.'
+            ], 400);
+        }
 
+        // Search names starting with the given letter
+        $names = NamesList::where('name_en', 'LIKE', $letter . '%')
+            ->get()
+            ->map(function ($name) {
+                return [
+                    'id' => $name->id,
+                    'religion_id' => $name->religion_id,
+                    'religion' => $name->religion ? $name->religion->title : null,
+                    'gender' => $name->gender,
+                    'name_bn' => $name->name_bn,
+                    'name_en' => $name->name_en,
+                    'bn_meaning' => $name->bn_meaning,
+                    'created_at' => $name->created_at,
+                    'updated_at' => $name->updated_at,
+                ];
+            });
+
+        return response()->json([
+            'status' => true,
+            'data' => $names
+        ]);
+    }
 }
