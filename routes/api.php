@@ -71,3 +71,11 @@ Route::prefix('names')->group(function () {
     Route::get('/religion/{id}/{gender}', [NamesListController::class, 'byReligionAndGender']);
     Route::post('/bulk', [NamesListController::class, 'bulkStore']);
 });
+
+
+// routes/api.php
+use App\Http\Controllers\NameSliderAppController;
+
+Route::get('/name-app-slider', [NameSliderAppController::class, 'index']);
+Route::post('/name-app-slider', [NameSliderAppController::class, 'store']);
+Route::delete('/name-app-slider/{slider}', [NameSliderAppController::class, 'destroy']);
