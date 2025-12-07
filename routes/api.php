@@ -80,3 +80,13 @@ use App\Http\Controllers\NameSliderAppController;
 Route::get('/name-app-slider', [NameSliderAppController::class, 'index']);
 Route::post('/name-app-slider', [NameSliderAppController::class, 'store']);
 Route::delete('/name-app-slider/{slider}', [NameSliderAppController::class, 'destroy']);
+
+
+use App\Http\Controllers\NoteController;
+
+Route::prefix('notes')->group(function () {
+    Route::get('/', [NoteController::class, 'index']); // GET /api/notes
+    Route::post('/add', [NoteController::class, 'store']); // POST /api/notes/add
+    Route::put('/update/{id}', [NoteController::class, 'update']); // PUT /api/notes/update/{id}
+    Route::delete('/delete/{id}', [NoteController::class, 'destroy']); // DELETE /api/notes/delete/{id}
+});
